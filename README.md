@@ -3,6 +3,7 @@
 [Compojure] for [macchiato-framework]
 
 [![Build Status](https://travis-ci.org/xafizoff/compojurescript.svg?branch=master)](https://travis-ci.org/xafizoff/compojurescript)
+[![Clojars Project](https://img.shields.io/clojars/v/compojurescript.svg)](https://clojars.org/compojurescript)
 
 ## Usage
 
