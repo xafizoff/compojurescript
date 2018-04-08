@@ -11,7 +11,17 @@
 [compojurescript "0.1.0-SNAPSHOT"]
 
 ```
-See [Compojure] docs for usage
+```clojure
+(ns hello-world.core
+  (:require [compojurescript.core :refer-macros [defroutes GET]]
+            [macchiato.util.response :refer [not-found]]))
+
+(defroutes app
+  (GET "/" [] "<h1>Hello World</h1>")
+  (not-found "<h1>Page not found</h1>"))
+```
+
+See [Compojure] docs for advanced usage
 
 ## License
 
