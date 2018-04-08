@@ -110,7 +110,7 @@
       (is (nil? (route (mock/request :get "/foo/1.1"))))
       (is (route (mock/request :get "/foo/10"))))))
 
-#_(deftest rfn-test
+(deftest rfn-test
   (testing "response rendering"
     (is (= ((rfn [] "foo") (mock/request :get "/"))
            (response/render "foo" {}))))
