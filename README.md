@@ -27,7 +27,7 @@ See [Compojure] docs for advanced usage
 
 Copyright © 2018 Marat Khafizov, James Reeves
 
-Distributed under the Eclipse Public License either version 1.0.
+Distributed under the Eclipse Public License version 1.0
 
 [Compojure]: https://github.com/weavejester/compojure
 [macchiato-framework]: https://github.com/macchiato-framework
