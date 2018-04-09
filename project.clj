@@ -1,4 +1,4 @@
-(defproject compojurescript "0.1.0-SNAPSHOT"
+(defproject compojurescript "0.1.1-SNAPSHOT"
   :description "Routing library for macchiato framework, ported from Compojure"
   :url "http://github.com/xafizoff/compojurescript"
   :license {:name "Eclipse Public License"
@@ -6,7 +6,6 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.10.238" :scope "provided"]
                  [org.clojure/tools.macro "0.1.5"]
-                 [macchiato/core "0.2.11"]
                  [medley "1.0.0"]
                  [clout "2.2.0"]]
   :plugins [[lein-cljsbuild "1.1.7"]

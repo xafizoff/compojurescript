@@ -5,7 +5,6 @@
   This namespace provides functions and macros for concisely constructing
   routes and combining them together to form more complex functions."
   (:require #?@(:cljs [[compojurescript.response :as response]
-                       [macchiato.middleware.head :refer [wrap-head]]
                        [compojurescript.clout :as clout]
                        [medley.core :refer [map-vals]]])
             #?(:clj [clojure.tools.macro :as macro])))
@@ -123,6 +122,27 @@
                         (handler request respond' raise))
                       (respond nil)))]
             (f handlers)))))
+
+     (defn head-request
+       [request]
+       (if (= :head (:request-method request))
+         (assoc request :request-method :get)
+         request))
+
+     (defn head-response
+       [response request]
+       (if (and response (= :head (:request-method request)))
+         (assoc response :body nil)
+         response))
+
+     (defn
+       wrap-head
+       [handler]
+       (fn [request]
+        (-> request
+            head-request
+            handler
+            (head-response request))))
 
      (defn ^:no-doc make-rfn [handler]
        (-> handler
