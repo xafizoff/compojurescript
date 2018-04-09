@@ -1,8 +1,6 @@
 (ns compojurescript.response
   "A protocol for generating Ring response maps"
-  (:refer-clojure :exclude [send])
-  (:require [macchiato.util.mime-type :as mime]
-            [macchiato.util.response :as response]))
+  (:refer-clojure :exclude [send]))
 
 (defn response
   "Returns a skeletal Macchiato response with the given body, status of 200, and no
@@ -11,6 +9,17 @@
   {:status  200
    :headers {}
    :body    body})
+
+(defn header
+  "Returns an updated response with the specified header added."
+  [resp name value]
+  (assoc-in resp [:headers name] (str value)))
+
+(defn content-type
+  "Returns an updated response with the a Content-Type header corresponding
+  to the given content-type."
+  [resp content-type]
+  (header resp "Content-Type" content-type))
 
 (defprotocol Renderable
   "A protocol that tells Compojure how to handle the return value of routes
@@ -34,22 +43,17 @@
     (send* x request respond raise)
     (respond (render x request))))
 
-(defn- guess-content-type [response name]
-  (if-let [mime-type (mime/ext-mime-type (str name))]
-    (response/content-type response mime-type)
-    response))
-
 (extend-protocol Renderable
   nil
   (render [_ _] nil)
   string
   (render [body _]
     (-> (response body)
-        (response/content-type "text/html; charset=utf-8")))
+        (content-type "text/html; charset=utf-8")))
   List
   (render [coll _]
     (-> (response coll)
-        (response/content-type "text/html; charset=utf-8")))
+        (content-type "text/html; charset=utf-8")))
   cljs.core/PersistentArrayMap
   (render [resp-map _]
     (merge (with-meta (response "") (meta resp-map))
