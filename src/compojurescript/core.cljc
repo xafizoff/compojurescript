@@ -11,6 +11,11 @@
 
 #?(:cljs
    (do
+     (extend-type PersistentVector
+         clout/Route
+         (route-matches [route request]
+           (clout/route-matches (clout/route-compile (first route) (apply hash-map (rest route))) request)))
+
      (defn route-compile
        "Wrapper for `clout/route-compile`. Required at runtime by some macros"
        ([path]

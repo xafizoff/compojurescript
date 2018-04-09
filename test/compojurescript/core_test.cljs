@@ -431,3 +431,16 @@
              {:status  200
               :headers {"Content-Type" "text/html; charset=utf-8"}
               :body    "foobar"})))))
+
+(deftest symbol-routes-test
+  (testing "symbol with string"
+    (let [s       "/foo"
+          handler (GET s [] "foo")]
+      (is (= "foo" (:body (handler (mock/request :get "/foo")))))
+      (is (nil? (handler (mock/request :get "/bar"))))))
+
+  (testing "symbol with vector"
+    (let [v       ["/foo/:id" :id #"\d+"]
+          handler (GET v [] "foo")]
+      (is (= "foo" (:body (handler (mock/request :get "/foo/123")))))
+      (is (nil? (handler (mock/request :get "/foo/bar")))))))
