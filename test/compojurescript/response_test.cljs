@@ -1,7 +1,7 @@
-(ns compojurescript.test.compojurescript.response-test
+(ns compojurescript.response-test
   (:require [cljs.test :refer-macros [deftest testing is]]
             [compojurescript.response :as response]
-            [compojurescript.test.mock :as mock :refer [future promise]]))
+            [compojurescript.mock :as mock :refer [future promise]]))
 
 (def expected-response
   {:status  200

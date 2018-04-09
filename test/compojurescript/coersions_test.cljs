@@ -1,4 +1,4 @@
-(ns compojurescript.test.compojurescript.coersions-test
+(ns compojurescript.coersions-test
   (:require [cljs.test :refer [deftest is]]
             [compojurescript.coersions :refer [as-int as-uuid]]))
 

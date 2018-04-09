@@ -1,4 +1,4 @@
-(ns compojurescript.test.compojurescript.core-test
+(ns compojurescript.core-test
   (:refer-clojure :exclude [rfn])
   (:require [cljs.test            :refer-macros [is are deftest testing use-fixtures]]
             [compojurescript.core :refer        [wrap-routes routes routing make-route]
@@ -6,7 +6,7 @@
             [compojurescript.coersions :as coersions]
             [compojurescript.response :as response]
             [compojurescript.clout :as clout]
-            [compojurescript.test.mock :as mock :refer [promise]]))
+            [compojurescript.mock :as mock :refer [promise]]))
 
 (deftest request-destructuring
   (testing "vector arguments"

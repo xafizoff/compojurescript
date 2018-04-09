@@ -1,5 +1,5 @@
 (defproject compojurescript "0.1.2-SNAPSHOT"
-  :description "Routing library for macchiato framework, ported from Compojure"
+  :description "Compojure for ClojureScript"
   :url "http://github.com/xafizoff/compojurescript"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -14,7 +14,7 @@
   :cljsbuild {:builds
               {:test
                {:source-paths ["src" "test"]
-                :compiler     {:main          compojurescript.test.runner
+                :compiler     {:main          compojurescript.test-runner
                                :output-dir    "target/test/out"
                                :output-to     "target/test/core.js"
                                :target        :nodejs

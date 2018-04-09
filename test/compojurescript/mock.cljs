@@ -1,4 +1,4 @@
-(ns compojurescript.test.mock
+(ns compojurescript.mock
   (:require [compojurescript.response :as resp]))
 
 (defn request
