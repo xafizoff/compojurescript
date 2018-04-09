@@ -1,4 +1,4 @@
-(defproject compojurescript "0.1.1"
+(defproject compojurescript "0.1.2-SNAPSHOT"
   :description "Routing library for macchiato framework, ported from Compojure"
   :url "http://github.com/xafizoff/compojurescript"
   :license {:name "Eclipse Public License"
