@@ -138,11 +138,16 @@
      (defn
        wrap-head
        [handler]
-       (fn [request]
-        (-> request
-            head-request
-            handler
-            (head-response request))))
+       (fn
+         ([request]
+          (-> request
+              head-request
+              handler
+              (head-response request)))
+         ([request respond raise]
+          (handler (head-request request)
+                   (fn [response] (respond (head-response response request)))
+                   raise))))
 
      (defn ^:no-doc make-rfn [handler]
        (-> handler
