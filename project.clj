@@ -9,7 +9,6 @@
                  [medley "1.0.0"]
                  [clout "2.2.0"]]
   :plugins [[lein-cljsbuild "1.1.7"]
-            [lein-npm "0.6.2"]
             [lein-doo "0.1.7"]]
   :cljsbuild {:builds
               {:test
@@ -25,6 +24,5 @@
   :aliases
   {"test"
    ["do"
-    ["npm" "install"]
     ["clean"]
     ["doo" "node" "once"]]})
