@@ -1,7 +1,6 @@
 (ns compojurescript.response-test
   (:require [cljs.test :refer-macros [deftest testing is]]
-            [compojurescript.response :as response]
-            [compojurescript.mock :as mock :refer [future promise]]))
+            [compojurescript.response :as response]))
 
 (def expected-response
   {:status  200
@@ -36,10 +35,6 @@
     (is (= (response/render handler-multi {})
            expected-response)))
 
-  (testing "with deref-able"
-    (is (= (response/render (future expected-response) {})
-           expected-response)))
-
   (testing "with map + metadata"
     (let [response (response/render ^{:has-metadata? true} {:body "foo"} {})]
       (is (= (:body response) "foo"))
@@ -52,20 +47,24 @@
 
 (deftest send-test
   (testing "render fallback"
-    (let [response  (promise)
-          exception (promise)]
-      (response/send "foo" {} response exception)
-      (is (not (realized? exception)))
+    (let [response  (atom nil)
+          exception (atom nil)]
+      (response/send "foo" {}
+                     #(reset! response %)
+                     #(reset! exception %))
+      (is (nil? @exception))
       (is (= @response
              {:status  200
               :headers {"Content-Type" "text/html; charset=utf-8"}
               :body    "foo"}))))
 
   (testing "function return value"
-    (let [response  (promise)
-          exception (promise)]
-      (response/send (fn [_ respond _] (respond "bar")) {} response exception)
-      (is (not (realized? exception)))
+    (let [response  (atom nil)
+          exception (atom nil)]
+      (response/send (fn [_ respond _] (respond "bar")) {}
+                     #(reset! response %)
+                     #(reset! exception %))
+      (is (nil? @exception))
       (is (= @response
              {:status  200
               :headers {"Content-Type" "text/html; charset=utf-8"}

@@ -6,7 +6,7 @@
             [compojurescript.coersions :as coersions]
             [compojurescript.response :as response]
             [compojurescript.clout :as clout]
-            [compojurescript.mock :as mock :refer [promise]]))
+            [compojurescript.mock :as mock]))
 
 (deftest request-destructuring
   (testing "vector arguments"
@@ -316,10 +316,10 @@
     (let [route (GET "/hello/:name" [name] (str "hello " name))]
       (testing "matching request"
         (let [request   (mock/request :get "/hello/world")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (= @response
                  {:status  200
                   :headers {"Content-Type" "text/html; charset=utf-8"}
@@ -327,10 +327,10 @@
 
       (testing "not-matching request"
         (let [request   (mock/request :get "/goodbye/world")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (nil? @response))))))
 
   (testing "multiple routes"
@@ -340,36 +340,36 @@
                  (GET "/baz" [] "baz"))]
       (testing "matching request"
         (let [request   (mock/request :get "/bar")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (= (:body @response) "bar"))))
 
       (testing "not-matching URI"
         (let [request   (mock/request :get "/quz")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (nil? @response))))
 
       (testing "not-matching method"
         (let [request   (mock/request :post "/bar")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (nil? @response))))))
 
   (testing "rfn"
     (let [route     (rfn [name] (str "hello " name))
           request   (-> (mock/request :get "/")
                         (assoc :params {:name "world"}))
-          response  (promise)
-          exception (promise)]
-      (route request response exception)
-      (is (not (realized? exception)))
+          response  (atom nil)
+          exception (atom nil)]
+      (route request #(reset! response %) #(reset! exception %))
+      (is (nil? @exception))
       (is (= @response
              {:status  200
               :headers {"Content-Type" "text/html; charset=utf-8"}
@@ -381,18 +381,18 @@
                          (GET "/baz" [] (str name "baz")))]
       (testing "matching request"
         (let [request   (mock/request :get "/foo/baz")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (= (:body @response) "foobaz"))))
 
       (testing "not-matching request"
         (let [request   (mock/request :get "/foo/quz")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (nil? @response))))))
 
   (testing "wrap-routes"
@@ -405,28 +405,28 @@
                               raise))))]
       (testing "matching request"
         (let [request   (mock/request :get "/foo")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (= (:body @response) "foo"))
           (is (= (::r @response) [:get "/foo"]))))
 
       (testing "not-matching request"
         (let [request   (mock/request :get "/bar")
-              response  (promise)
-              exception (promise)]
-          (route request response exception)
-          (is (not (realized? exception)))
+              response  (atom nil)
+              exception (atom nil)]
+          (route request #(reset! response %) #(reset! exception %))
+          (is (nil? @exception))
           (is (nil? @response))))))
 
   (testing "async response"
     (let [route (GET "/" [] (fn [_ respond _] (respond "foobar")))
           request   (mock/request :get "/")
-          response  (promise)
-          exception (promise)]
-      (route request response exception)
-      (is (not (realized? exception)))
+          response  (atom nil)
+          exception (atom nil)]
+      (route request #(reset! response %) #(reset! exception %))
+      (is (nil? @exception))
       (is (= @response
              {:status  200
               :headers {"Content-Type" "text/html; charset=utf-8"}
