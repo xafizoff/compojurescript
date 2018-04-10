@@ -11,10 +11,6 @@
 
 #?(:cljs
    (do
-     (extend-type PersistentVector
-         clout/Route
-         (route-matches [route request]
-           (clout/route-matches (clout/route-compile (first route) (apply hash-map (rest route))) request)))
 
      (defn route-compile
        "Wrapper for `clout/route-compile`. Required at runtime by some macros"
@@ -229,15 +225,15 @@
          (not (or (symbol? x) (list? x)))))
 
      (defn- prepare-route [route]
-       (cond
-         (vector? route)
-         `(compojurescript.core/route-compile
-           ~(first route)
-           ~(apply hash-map (rest route)))
-         :else
-         `(if (string? ~route)
-            (compojurescript.core/route-compile ~route)
-            ~route)))
+       `(cond
+          (vector? ~route)
+          (compojurescript.core/route-compile
+            (first ~route)
+            (apply hash-map (rest ~route)))
+          (string? ~route)
+          (compojurescript.core/route-compile ~route)
+          :else
+          ~route))
 
      (defn- and-binding [req binds]
        `(dissoc (:params ~req) ~@(map keyword (keys binds)) ~@(map str (keys binds))))
@@ -343,13 +339,13 @@
 
      (defn- context-route [route]
        (let [re-context {:__path-info #"|/.*"}]
-         (cond
-           (vector? route)
-           `(compojurescript.core/route-compile
-             (str ~(first route) ":__path-info")
-             ~(merge (apply hash-map (rest route)) re-context))
+         `(cond
+           (vector? ~route)
+           (compojurescript.core/route-compile
+             (str (first ~route) ":__path-info")
+             (merge (apply hash-map (rest ~route)) ~re-context))
            :else
-           `(compojurescript.core/route-compile (str ~route ":__path-info") ~re-context))))
+           (compojurescript.core/route-compile (str ~route ":__path-info") ~re-context))))
 
      (defmacro context
        "Give all routes in the form a common path prefix and set of bindings.
