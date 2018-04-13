@@ -11,7 +11,7 @@
 [compojurescript "0.1.1"]
 
 ```
-Here's simple example of use:
+### Node.js with [macchiato-framework]
 ```clojure
 (ns hello-world.core
   (:require [compojurescript.core :refer-macros [defroutes GET]]
@@ -20,6 +20,22 @@ Here's simple example of use:
 (defroutes app
   (GET "/" [] "<h1>Hello World</h1>")
   (not-found "<h1>Page not found</h1>"))
+```
+
+### SPA with [accountant]
+```clojure
+(defroutes app-routes
+  (ANY "/" [] {:page :home})
+  (ANY "/ext" [] nil) ;external link, not handled by accountant
+  {:page :not-found})
+
+(defn navigate! [path]
+  (if-let [{:keys [page params]} (app-routes {:uri path})]
+    ; draw your page
+    ))
+
+(accountant/configure-navigation! {:nav-handler  navigate!
+                                   :path-exists? #(app-routes {:uri %})})
 ```
 
 See [Compojure] docs for advanced usage
@@ -32,3 +48,4 @@ Distributed under the Eclipse Public License version 1.0
 
 [Compojure]: https://github.com/weavejester/compojure
 [macchiato-framework]: https://github.com/macchiato-framework
+[accountant]: https://github.com/venantius/accountant
