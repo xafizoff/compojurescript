@@ -5,7 +5,7 @@
                                   :refer-macros [defroutes let-routes rfn context GET POST DELETE PUT ANY]]
             [compojurescript.coersions :as coersions]
             [compojurescript.response :as response]
-            [compojurescript.clout :as clout]
+            [clout.core :as clout]
             [compojurescript.mock :as mock]))
 
 (deftest request-destructuring

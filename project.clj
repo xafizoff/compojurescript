@@ -7,7 +7,7 @@
                  [org.clojure/clojurescript "1.10.238" :scope "provided"]
                  [org.clojure/tools.macro "0.1.5"]
                  [medley "1.0.0"]
-                 [clout "2.2.0"]]
+                 [clout "2.2.1"]]
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-doo "0.1.7"]]
   :cljsbuild {:builds

@@ -5,7 +5,7 @@
   This namespace provides functions and macros for concisely constructing
   routes and combining them together to form more complex functions."
   (:require #?@(:cljs [[compojurescript.response :as response]
-                       [compojurescript.clout :as clout]
+                       [clout.core :as clout]
                        [medley.core :refer [map-vals]]])
             #?(:clj [clojure.tools.macro :as macro])))
 
